@@ -1,0 +1,46 @@
+mixin posts_list(content)
+    if (content.meta.count)
+        p='Count: ' + content.meta.count
+    table.table
+        tr
+            th='id'
+            th='title'
+            th='text'
+            th='tags'
+        each post in content.data
+            tr
+                form(method='post', action='/posts/' + post.id)
+                    .input-group
+                        td
+                            a(href='/post/' + post.id)
+                                | #{post.id}
+                            br
+                            div(id='created-' + post.id).date
+                            script.
+                                var date = moment("#{post.attributes['date-created']}").format('YYYY-MM-DD hh:mm');
+                                document.getElementById('created-#{post.id}').innerHTML = date
+                        td
+                            input.form-control(name='title', type='text', value=post.attributes.title)
+                        td
+                            textarea.form-control(name='text', rows=5)
+                                | #{post.attributes.text}
+                        td
+                            if tags
+                                each tag in tags.data
+                                    .form-check
+                                        input.form-check-input(
+                                            type='checkbox',
+                                            name='tags[]',
+                                            value=tag.id
+                                            checked=post_tags[post.id][tag.id])
+                                        label.form-check-label
+                                            | #{tag.attributes.text}
+                            else
+                                each tag in post.relationships.tags.data
+                                    a(href='/tag/' + tag.id)
+                                        | #{tag.id}
+                                    br
+                        td
+                            input.form-control(type='submit', name='action', value='update')
+                        td
+                            input.form-control(type='submit', name='action', value='delete')

@@ -1,0 +1,14 @@
+extends layout.pug
+include components/tags_list.pug
+include components/search.pug
+block content
+    h1="Tags"
+    +search('/tags/search', ['id','text','color'])
+    h2='Tags'
+    +pagination(content.offsets)
+    if content.data
+        +tags_list(content)
+    else
+        p='Aucun résultat'
+    +pagination(content.offsets)
+

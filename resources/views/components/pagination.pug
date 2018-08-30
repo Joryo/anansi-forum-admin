@@ -1,0 +1,10 @@
+mixin pagination(offsets)
+    if offsets
+        nav
+            ul.pagination
+                if (offsets.prev !== false)
+                    li.page-item
+                        a.page-link(href=offsets.prev)='Previous'
+                if (offsets.next != false)
+                    li.page-item
+                        a.page-link(href=offsets.next)='Next'

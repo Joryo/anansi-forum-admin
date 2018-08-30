@@ -1,0 +1,25 @@
+extends layout.pug
+include components/members_list.pug
+include components/search.pug
+block content
+    h1="Members"
+    +search('/members/search', ['id','pseudo','email'])
+    h2='Members'
+    +pagination(content.offsets)
+    if content.data
+        +members_list(content)
+    else
+        p='Aucun résultat'
+    +pagination(content.offsets)
+    if content_relationships
+        if content_relationships.posts
+            include components/posts_list.pug
+            h2="Last member posts"
+            a(href='/member/' + content.data[0].id + '/posts')="Show all member posts"
+            +posts_list(content_relationships.posts)
+        if content_relationships.comments
+            include components/comments_list.pug
+            h2="Last member comments"
+            a(href='/member/' + content.data[0].id + '/comments')="Show all member comments"
+            +comments_list(content_relationships.comments)
+

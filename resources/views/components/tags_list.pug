@@ -1,0 +1,26 @@
+mixin tags_list(content)
+    if (content.meta.count)
+        p='Count: ' + content.meta.count
+    table.table
+        tr
+            th='id'
+            th='text'
+            th='color'
+        each tag in content.data
+            tr
+                form(method='post', action='/tags/' + tag.id)
+                    .input-group
+                        td
+                            a(href='/tag/' + tag.id)
+                                | #{tag.id}
+                            script.
+                                var date = moment("#{tag.attributes['date-created']}").format('YYYY-MM-DD hh:mm');
+                                document.getElementById('created-#{tag.id}').innerHTML = date
+                        td
+                            input.form-control(type='text', name='text', value=tag.attributes.text)
+                        td
+                            input.form-control(type='text', name='color', value=tag.attributes.color)
+                        td
+                            input.form-control(type='submit', name='action', value='update')
+                        td
+                            input.form-control(type='submit', name='action', value='delete')

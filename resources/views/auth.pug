@@ -1,0 +1,19 @@
+header
+  link(href='css/bootstrap.min.css' media="all" rel="stylesheet" type="text/css")
+  link(href='css/login.css' media="all" rel="stylesheet" type="text/css")
+  script(type="text/javascript" src='js/bootstrap.min.js')
+body
+  .container
+    h1.form-heading login Form
+    .login-form
+      .main-div
+        .panel
+          h2 Anansi Forum Admin Panel
+        form#Login(action='/auth' method='POST')
+          .form-group
+            input#inputEmail.form-control(name='email', type='email', placeholder='Email Address')
+          .form-group
+            input#inputPassword.form-control(name='password', type='password', placeholder='Password')
+          if error
+            p.text-danger=error
+          button.btn.btn-primary(type='submit') Login

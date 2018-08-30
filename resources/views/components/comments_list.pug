@@ -1,0 +1,26 @@
+mixin comments_list(content)
+    if (content.meta.count)
+        p='Count: ' + content.meta.count
+    table.table
+        tr
+            th='id'
+            th='text'
+        each comment in content.data
+            tr
+                form(method='post', action='/comments/' + comment.id)
+                    .input-group
+                        td
+                            a(href='/comment/' + comment.id)
+                                | #{comment.id}
+                            br
+                            div(id='created-' + comment.id).date
+                            script.
+                                var date = moment("#{comment.attributes['date-created']}").format('YYYY-MM-DD hh:mm');
+                                document.getElementById('created-#{comment.id}').innerHTML = date
+                        td
+                            textarea.form-control(name='text', rows=5)
+                                | #{comment.attributes.text}
+                        td
+                            input.form-control(type='submit', name='action', value='update')
+                        td
+                            input.form-control(type='submit', name='action', value='delete')

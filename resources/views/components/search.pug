@@ -1,0 +1,11 @@
+mixin search(action, items)
+    form(method='GET', action=action)
+        .form-row
+            .col-sm-3
+                input.form-control.col(name='query', type='text')
+            .col-sm-2
+                select.form-control.col(name='field')
+                    each item in items
+                        option(value=item)=item
+            .col-sm-1
+                input.col.form-control(type='submit', value="search", class='btn btn-primary')

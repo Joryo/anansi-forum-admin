@@ -1,0 +1,31 @@
+extends layout.pug
+include components/comments_list.pug
+include components/search.pug
+block content
+    h1="Comments"
+    +search('/comments/search', ['id'])
+    if content_source.author
+        include components/members_list.pug
+        h2="Comments author"
+        +members_list(content_source.author)
+    if content_source.post
+        include components/posts_list.pug
+        h2="Comments post"
+        +posts_list(content_source.post)
+    h2='Comments'
+    +pagination(content.offsets)
+    if content.data
+        +comments_list(content)
+    else
+        p='Aucun résultat'
+    +pagination(content.offsets)
+    if content_relationships
+        if content_relationships.author
+            include components/members_list.pug
+            h2="Comment author"
+            +members_list(content_relationships.author)
+        if content_relationships.comments
+            include components/posts_list.pug
+            h2="Comment post"
+            +posts_list(content_relationships.posts)
+

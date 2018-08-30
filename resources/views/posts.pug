@@ -1,0 +1,28 @@
+extends layout.pug
+include components/posts_list.pug
+include components/search.pug
+block content
+    h1="Posts"
+    +search('/posts/search', ['id','title'])
+    if content_source.author
+        include components/members_list.pug
+        h2="Posts author"
+        +members_list(content_source.author)
+    h2='Posts'
+    +pagination(content.offsets)
+    if content.data
+        +posts_list(content)
+    else
+        p='Aucun résultat'
+    +pagination(content.offsets)
+    if content_relationships
+        if content_relationships.author
+            include components/members_list.pug
+            h2="Post author"
+            +members_list(content_relationships.author)
+        if content_relationships.comments
+            include components/comments_list.pug
+            h2="Post comments"
+            a(href='/post/' + content.data[0].id + '/comments')="Show all post comments"
+            +comments_list(content_relationships.comments)
+

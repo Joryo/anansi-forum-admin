@@ -1,0 +1,39 @@
+mixin members_list(content)
+    if (content.meta.count)
+        p='Count: ' + content.meta.count
+    table.table
+        tr
+            th='id'
+            th='pseudo'
+            th='email'
+            th='role'
+            th='password'
+        each user in content.data
+            tr
+                form(method='post', action='/members/' + user.id)
+                    .input-group
+                        td
+                            a(href='/member/' + user.id)
+                                | #{user.id}
+                            br
+                            div(id='created-' + user.id).date
+                            script.
+                                var date = moment("#{user.attributes['date-created']}").format('YYYY-MM-DD hh:mm');
+                                document.getElementById('created-#{user.id}').innerHTML = date
+                        td
+                            input.form-control(name='pseudo', type='text', value=user.attributes.pseudo)
+                        td
+                            input.form-control(name='email', type='text', value=user.attributes.email)
+                        td
+                            select.form-control(name='role')
+                                each role in ['guest', 'registered', 'admin']
+                                    if (user.attributes.role == role)
+                                        option(value=role, selected=true) #{role}
+                                    else 
+                                        option(value=role) #{role}
+                        td
+                            input.form-control(name='password', type='text')
+                        td
+                            input.form-control(type='submit', name='action', value='update')
+                        td
+                            input.form-control(type='submit', name='action', value='delete')
