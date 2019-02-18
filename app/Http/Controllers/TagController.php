@@ -43,6 +43,17 @@ class TagController extends Controller
     }
 
     /**
+     * Create a single tag and display tag list
+     * @param Request $request
+     */
+    public function create(Request $request)
+    {
+        $this->model->create($request->input());
+
+        return redirect()->route('tags');
+    }
+
+    /**
      * Update a single tag and display tag
      * @param Request $request
      * @param int $id - Tag id
@@ -60,7 +71,7 @@ class TagController extends Controller
             default:
                 break;
         }
-    
+
         return redirect()->route('tags');
     }
 

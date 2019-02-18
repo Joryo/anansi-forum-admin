@@ -1,29 +1,30 @@
 doctype html(lang='en')
 head
-    meta(charset='utf-8')   
+    meta(charset='utf-8')
     meta(name='viewport', content='width=device-width, initial-scale=1, shrink-to-fit=no')
     title Admin Panel
     link(href='../../css/bootstrap.min.css', rel='stylesheet')
     link(href='../../css/app.css', rel='stylesheet')
 body
     script(src='../../js/moment.js')
+    script(src='../../js/jscolor.js')
     include components/pagination.pug
     nav.navbar.navbar-expand-md.navbar-dark.bg-dark.fixed-top
-        a.navbar-brand(href='/') Anansi Admin     
+        a.navbar-brand(href='/') Anansi Admin
         #navbarsExampleDefault.collapse.navbar-collapse
         ul.navbar-nav.mr-auto
             li.nav-item
-                a.nav-link(href='/main') Main      
+                a.nav-link(href='/main') Main
             li.nav-item
                 a.nav-link(href='/members') Members
             li.nav-item
                 a.nav-link(href='/posts') Posts
             li.nav-item
-                a.nav-link(href='/comments') Comments  
+                a.nav-link(href='/comments') Comments
             li.nav-item
-                a.nav-link(href='/tags') Tags             
+                a.nav-link(href='/tags') Tags
             li.nav-item
-                a.nav-link(href='/auth') Logout         
+                a.nav-link(href='/auth') Logout
     main.container(role='main', style='margin-top:70px')
-        block content 
-    
+        block content
+

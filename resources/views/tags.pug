@@ -2,13 +2,24 @@ extends layout.pug
 include components/tags_list.pug
 include components/search.pug
 block content
-    h1="Tags"
-    +search('/tags/search', ['id','text','color'])
-    h2='Tags'
-    +pagination(content.offsets)
-    if content.data
-        +tags_list(content)
-    else
-        p='Aucun résultat'
-    +pagination(content.offsets)
+	h1="Tags"
+	+search('/tags/search', ['id','text','color'])
+	h2='Tags'
+	+pagination(content.offsets)
+	if content.data
+		+tags_list(content)
+	else
+		p='Aucun résultat'
+	+pagination(content.offsets)
+	h2='Create new tag'
+	form(method='post', action='/tags/' + tag.id)
+		.form-group.col-md-6
+			label(for='inputText') Text
+			input#inputText.form-control(type='text', name='text')
+		.form-group.col-md-6
+			label(for='inputColor') Color
+			input.jscolor.form-control(name='color')
+		.form-group.col-md-2
+			input.form-control(type='submit', value='Add')
+
 

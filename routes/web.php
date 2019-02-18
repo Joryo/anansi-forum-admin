@@ -53,7 +53,7 @@ $router->get('/member/{id}',
     ]
 );
 
-// Update member data 
+// Update member data
 $router->post('/members/{id}', 'MemberController@update');
 
 // Search members
@@ -95,7 +95,7 @@ $router->get('/post/{id}',
     ]
 );
 
-// Update post data 
+// Update post data
 $router->post('/posts/{id}', 'PostController@update');
 
 // Search post
@@ -129,7 +129,7 @@ $router->get('/comment/{id}',
     ]
 );
 
-// Update comment data 
+// Update comment data
 $router->post('/comments/{id}', 'CommentController@update');
 
 // Search comment
@@ -147,7 +147,7 @@ $router->get('/tags',
     ]
 );
 
-//Display comment info
+//Display tags info
 $router->get('/tag/{id}',
     [
         'as' => 'tag',
@@ -155,8 +155,11 @@ $router->get('/tag/{id}',
     ]
 );
 
-// Update comment data 
+// Update tag data
 $router->post('/tags/{id}', 'TagController@update');
 
-// Search comment
+// Search tag
 $router->get('/tags/search', 'TagController@search');
+
+// Add tag
+$router->post('/tags', 'TagController@create');

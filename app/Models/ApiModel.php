@@ -14,14 +14,18 @@ class ApiModel
 
     public function __construct()
     {
-        $jwt = $_SESSION['jwt'];
+        if(empty($_SESSION['jwt'])) {
+            $jwt = '';
+        } else {
+            $jwt = $_SESSION['jwt'];
+        }
         $this->header = ['Content-Type' => 'application/vnd.api+json', 'Authorization' => "Bearer {$jwt}"];
     }
 
     /**
      * Get all resources
      * @param int $offset
-     * 
+     *
      * @return Array
      */
     public function getAll($offset = 0)
@@ -41,12 +45,12 @@ class ApiModel
      * @param int $offset
      * @param string $field
      * @param string $value
-     * 
+     *
      * @return Array
      */
     public function getFiltered($offset = 0, $field, $value)
     {
-        $response = app('api')->get($this->type . 's?page[offset]=' . $offset . '&filter[' 
+        $response = app('api')->get($this->type . 's?page[offset]=' . $offset . '&filter['
             . $field . ']=' . $value, [
             'headers' => $this->header
         ]);
@@ -60,7 +64,7 @@ class ApiModel
     /**
      * Get single resource
      * @param $id - Resource id
-     * 
+     *
      * @return Array
      */
     public function get($id)
@@ -76,16 +80,16 @@ class ApiModel
      * Get last created relationship of a resource
      * @param int $id - Id of the resource
      * @param string $relationship - Relationship type
-     * 
+     *
      * @return Array
      */
     public function getLastRelationships($id, $relationship)
     {
-        $response = app('api')->get($this->type . 's/' . $id . '/' 
+        $response = app('api')->get($this->type . 's/' . $id . '/'
             . $relationship . '?sort=-date-created', [
             'headers' => $this->header
         ]);
-        
+
 
         return $this->getContent($response);
     }
@@ -95,17 +99,17 @@ class ApiModel
      * @param int $id - Id of the resource
      * @param string $relationship - Relationship type
      * @param int $offset
-     * 
+     *
      * @return Array
      */
     public function getRelationships($id, $relationship, $offset = 0)
     {
 
-        $response = app('api')->get($this->type . 's/' . $id . '/' 
+        $response = app('api')->get($this->type . 's/' . $id . '/'
             . $relationship . '?sort=-date-created&page[offset]=' . $offset, [
             'headers' => $this->header
         ]);
-        
+
         $content = $this->getContent($response);
         $content->offsets = $this->addPaginationFromData($content->data, (int) $offset);
         return $content;
@@ -126,7 +130,7 @@ class ApiModel
      * Update a single resource
      * @param int $id - Id of the resource
      * @param array $data - Data of the resource
-     * 
+     *
      * @return int status code
      */
     public function update($id, $data = [])
@@ -146,9 +150,30 @@ class ApiModel
     }
 
     /**
+     * Create a single resource
+     * @param array $data - Data of the resource
+     *
+     * @return int status code
+     */
+    public function create($data = [])
+    {
+        $response = app('api')->post($this->type . 's', [
+            'headers' => $this->header,
+            'json' => [
+                'data' => [
+                    'type' => $this->type,
+                    'attributes' => $data
+                ]
+            ]
+        ]);
+
+        return $response->getStatusCode();
+    }
+
+    /**
      * Search a resource
      * @param Array $data - Search data
-     * 
+     *
      * @return Array
      */
     public function search($data = [])
@@ -174,7 +199,7 @@ class ApiModel
      * Get response data content
      * @param Object $response - Api response
      * @param Bool $force_collections
-     * 
+     *
      * @return Array
      */
     protected function getContent($response, $force_collections = true)
@@ -191,7 +216,7 @@ class ApiModel
     /**
      * Extract previous an next page offset fom jsonapi links
      * @param Array $links
-     * 
+     *
      * @return Array
      */
     private function addPaginationFromLinks($links)
@@ -205,7 +230,7 @@ class ApiModel
         if (!empty($links->next)) {
             parse_str(explode('?', $links->next)[1], $next);
         }
-        
+
         return $this->getPaginationLinks($prev['page']['offset'], $next['page']['offset']);
     }
 
@@ -213,7 +238,7 @@ class ApiModel
      * Add offset when jsonApi don't provide links
      * @param Array $data
      * @param int $offset
-     * 
+     *
      * @return Array
      */
     private function addPaginationFromData($data, $offset)
@@ -240,7 +265,7 @@ class ApiModel
      * Create pagination links from prev and next offsets
      * @param Int $prev_offset
      * @param Int $next_offset
-     * 
+     *
      * @return Array
      */
     private function getPaginationLinks($prev_offset, $next_offset)

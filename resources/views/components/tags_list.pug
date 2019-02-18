@@ -19,7 +19,7 @@ mixin tags_list(content)
                         td
                             input.form-control(type='text', name='text', value=tag.attributes.text)
                         td
-                            input.form-control(type='text', name='color', value=tag.attributes.color)
+                            input.form-control.jscolor(type='text', name='color', value=tag.attributes.color)
                         td
                             input.form-control(type='submit', name='action', value='update')
                         td
