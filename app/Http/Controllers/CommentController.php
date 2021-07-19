@@ -25,7 +25,7 @@ class CommentController extends Controller
      */
     public function getAll(Request $request)
     {
-        $page = $request->input('offset') ? $request->input('offset') : 0;
+        $page = $request->input('offset', 0);
 
         return view('comments', ['content' => $this->model->getAll($page)]);
     }
@@ -64,7 +64,7 @@ class CommentController extends Controller
             default:
                 break;
         }
-    
+
         return redirect()->route('comments');
     }
 
@@ -74,7 +74,8 @@ class CommentController extends Controller
      */
     public function search(Request $request)
     {
-        return view('comments',
+        return view(
+            'comments',
             ['content' => $this->model->search($request->input())]
         );
     }

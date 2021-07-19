@@ -2,8 +2,7 @@
 
 namespace App\Providers;
 
-use App\User;
-use Illuminate\Support\Facades\Gate;
+use App\Models\User;
 use Illuminate\Support\ServiceProvider;
 use Illuminate\Auth\GenericUser;
 
@@ -26,10 +25,10 @@ class AuthServiceProvider extends ServiceProvider
      */
     public function boot()
     {
-        $this->app['auth']->viaRequest('api', function ($request) {
+        $this->app['auth']->viaRequest('api', function () {
             if (!empty($_SESSION["jwt"])) {
                 return new GenericUser(['jwt' => $_SESSION["jwt"]]);
-            } 
+            }
 
             return null;
         });

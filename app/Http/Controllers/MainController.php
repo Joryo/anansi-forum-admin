@@ -27,7 +27,7 @@ class MainController extends Controller
      */
     public function index(Request $request)
     {
-        $page = $request->input('offset') ? $request->input('offset') : 0;
+        $page = $request->input('offset', 0);
 
         $data['api'] = [
             'uri' => env('API_URI'),

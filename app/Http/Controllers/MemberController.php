@@ -25,7 +25,7 @@ class MemberController extends Controller
      */
     public function getAll(Request $request)
     {
-        $page = $request->input('offset') ? $request->input('offset') : 0;
+        $page = $request->input('offset', 0);
 
         return view('members', ['content' => $this->model->getAll($page)]);
     }
@@ -64,7 +64,7 @@ class MemberController extends Controller
             default:
                 break;
         }
-    
+
         return redirect()->route('members');
     }
 
@@ -74,7 +74,8 @@ class MemberController extends Controller
      */
     public function search(Request $request)
     {
-        return view('members',
+        return view(
+            'members',
             ['content' => $this->model->search($request->input())]
         );
     }
@@ -86,7 +87,8 @@ class MemberController extends Controller
      */
     public function getAllMemberPosts(Request $request, $id)
     {
-        return view('posts',
+        return view(
+            'posts',
             [
                 'content_source' => ['author' => $this->model->get($id)],
                 'content' => $this->model->getRelationships($id, 'posts', $request->input('offset'))
@@ -101,7 +103,8 @@ class MemberController extends Controller
      */
     public function getAllMemberComments(Request $request, $id)
     {
-        return view('comments',
+        return view(
+            'comments',
             [
                 'content_source' => ['author' => $this->model->get($id)],
                 'content' => $this->model->getRelationships($id, 'comments', $request->input('offset'))

@@ -30,12 +30,13 @@ class PostController extends Controller
         $content = $this->model->getAll();
         $tags = $this->tagModel->getAll();
         $post_tags = $this->extractPostTags($content, $tags);
-        $page = $request->input('offset') ? $request->input('offset') : 0;
+        $page = $request->input('offset', 0);
 
-        return view('posts', [
+        return view(
+            'posts', [
             'content' => $this->model->getAll($page),
             'tags' => $tags,
-            'post_tags' => $post_tags    
+            'post_tags' => $post_tags
         ]);
     }
 
@@ -50,7 +51,8 @@ class PostController extends Controller
         $tags = $this->tagModel->getAll();
         $post_tags = $this->extractPostTags($content, $tags);
 
-        return view('posts', [
+        return view(
+            'posts', [
             'content' => $content,
             'content_relationships' => [
                 'author' => $this->model->getRelationships($id, 'author'),
@@ -63,9 +65,9 @@ class PostController extends Controller
 
     /**
      * Extract checked tags from post content
-     * @param array $content - Post content
-     * @param array $tags - All available tags
-     * 
+     * @param object $content - Post content
+     * @param object $tags - All available tags
+     *
      * @return array All tags with check of post's tags
      */
     private function extractPostTags($content, $tags)
@@ -74,10 +76,12 @@ class PostController extends Controller
         foreach ($content->data as $post) {
             $post_tags[$post->id] = [];
             $checked_tags = array_map(
-                function ($e) {return $e->id;},
+                function ($e) {
+                    return $e->id;
+                },
                 $post->relationships->tags->data
             );
-            
+
             foreach ($tags->data as $tag) {
                 $post_tags[$post->id][$tag->id] = in_array($tag->id, $checked_tags);
             }
@@ -104,7 +108,7 @@ class PostController extends Controller
             default:
                 break;
         }
-    
+
         return redirect()->route('posts');
     }
 
@@ -114,7 +118,8 @@ class PostController extends Controller
      */
     public function search(Request $request)
     {
-        return view('posts',
+        return view(
+            'posts',
             ['content' => $this->model->search($request->input())]
         );
     }
